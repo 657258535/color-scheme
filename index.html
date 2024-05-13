@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="utf-8" />
+    <title>配色</title>
+    <meta name="keywords" content="配色">
+    <meta name="description" content="配色">
+    <style>
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        /*全局样式*/
+        *,
+        input::-webkit-input-placeholder {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box;
+            font-family: "楷体";
+            text-decoration: none;
+            color: #f8f8f8;
+            outline: none;
+            list-style: none;
+            user-select: none;
+        }
+
+        /*背景色*/
+        body {
+            /*background-color:#00C5CD;*/
+        }
+
+        .color {
+            width: 100%;
+            height: 100vh;
+            background-color: #000;
+        }
+
+        .cleft,
+        .cright {
+            width: 50%;
+            height: 100vh;
+            float: left;
+            z-index: -1;
+        }
+
+        .cleft {
+            background-color: #333;
+        }
+
+        .cright {
+            background-color: #555;
+        }
+
+        .ctop,
+        .cbottom {
+            width: 200px;
+            height: 200px;
+            background-color: #111;
+            z-index: 1;
+            position: fixed;
+            left: calc(50vw - 100px);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 200px;
+            box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.2);
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .ctop {
+            top: 15vh;
+        }
+
+        .cbottom {
+            top: 65vh;
+        }
+    </style>
+</head>
+
+<body>
+<div class="color">
+    <div class="cleft">
+
+    </div>
+    <div class="cright">
+
+    </div>
+
+    <div class="ctop">#000000</div>
+    <div class="cbottom">#666666</div>
+
+</div>
+<script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/clipboard.js/2.0.10/clipboard.min.js" type="application/javascript"></script>
+<script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/sweetalert/2.1.2/sweetalert.min.js" type="application/javascript"></script>
+
+<script type="text/javascript">
+    var autoDownloadEnabled = false;
+
+    function copyToClipboard(text) {
+        var tempInput = document.createElement("input");
+        tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+    }
+
+    function showCopiedMessage() {
+        swal({
+            title: "已复制",
+            text: "颜色值已成功复制到剪贴板",
+            icon: "success",
+            // button: "好的",
+            buttons: false,
+            timer: 500
+        });
+    }
+
+    document.querySelector('.ctop').addEventListener('click', function () {
+        copyToClipboard(this.innerHTML + " " + document.querySelector('.cbottom').innerHTML);
+        showCopiedMessage();
+    });
+
+    document.querySelector('.cbottom').addEventListener('click', function () {
+        copyToClipboard(document.querySelector('.ctop').innerHTML + " " + this.innerHTML);
+        showCopiedMessage();
+    });
+
+    function getRandomColor() {
+        // 生成随机颜色的函数
+        return '#' + Math.floor(Math.random() * 16777215).toString(16);
+    }
+
+    function setColors() {
+        // 生成两种不同的随机颜色
+        var color1 = getRandomColor();
+        var color2 = getRandomColor();
+        // var color2 = invertColor(color1);
+        // 设置 cleft、ctop、cright、cbottom 的背景颜色
+        document.querySelector('.cleft').style.backgroundColor = color1;
+        document.querySelector('.cright').style.backgroundColor = color2;
+
+        document.querySelector('.ctop').style.backgroundColor = color1;
+        document.querySelector('.cbottom').style.backgroundColor = color2;
+        document.querySelector('.ctop').innerHTML = color1;
+        document.querySelector('.cbottom').innerHTML = color2;
+
+        // 设置 ctop 和 cbottom 的文字颜色
+        document.querySelector('.ctop').style.color = color2;
+        document.querySelector('.cbottom').style.color = color1;
+
+        if (autoDownloadEnabled) {
+            downloadColors();
+        }
+    }
+
+    function invertColor(hex) {
+        // 计算颜色的反色
+        if (hex.indexOf('#') === 0) {
+            hex = hex.slice(1);
+        }
+        // Convert hex to RGB
+        var r = parseInt(hex.slice(0, 2), 16);
+        var g = parseInt(hex.slice(2, 4), 16);
+        var b = parseInt(hex.slice(4, 6), 16);
+
+        // Convert RGB to invert RGB
+        r = 255 - r;
+        g = 255 - g;
+        b = 255 - b;
+
+        // Convert invert RGB to hex
+        return '#' + ('000000' + (r << 16 | g << 8 | b).toString(16)).slice(-6);
+    }
+
+    function downloadColors() {
+        var colorsText = document.querySelector('.ctop').innerHTML + " " + document.querySelector('.cbottom').innerHTML;
+        var blob = new Blob([colorsText], {
+            type: "text/plain;charset=utf-8"
+        });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = "colors.txt";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // Listen for 'D' key press event
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'D' || event.key === 'd') {
+            autoDownloadEnabled = !autoDownloadEnabled;
+        }
+    });
+
+    // 每隔3秒更新颜色
+    setInterval(setColors, 1000);
+
+    // 初始化设置一次颜色
+    setColors();
+</script>
+
+</body>
+</html>
