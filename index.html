@@ -106,10 +106,12 @@
     document.querySelector('.ctop').addEventListener('click', function () {
         copyToClipboard(this.innerHTML + " " + document.querySelector('.cbottom').innerHTML);
         showCopiedMessage();
+        downloadScreenshot();
     });
     document.querySelector('.cbottom').addEventListener('click', function () {
         copyToClipboard(document.querySelector('.ctop').innerHTML + " " + this.innerHTML);
         showCopiedMessage();
+        downloadScreenshot();
     });
     function getRandomColor() {
         // 生成随机颜色的函数
