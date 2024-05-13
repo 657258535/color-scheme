@@ -187,6 +187,7 @@
         html2canvas(document.querySelector('.color')).then(function(canvas) {
             var link = document.createElement('a');
             var colorsName = document.querySelector('.ctop').innerHTML + "-" + document.querySelector('.cbottom').innerHTML;
+            colorsName = colorsName.split("#").join("");
             link.download = colorsName + '.png';
             link.href = canvas.toDataURL();
             link.click();
