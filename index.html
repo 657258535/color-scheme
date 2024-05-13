@@ -80,8 +80,10 @@
     <div class="cbottom">#666666</div>
 </div>
 <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/sweetalert/2.1.2/sweetalert.min.js" type="application/javascript"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script type="text/javascript">
     var autoDownloadEnabled = false;
+    var autoDownloadScreenshotEnabled = false;
     function copyToClipboard(text) {
         var tempInput = document.createElement("input");
         tempInput.style = "position: absolute; left: -1000px; top: -1000px";
@@ -131,6 +133,9 @@
         if (autoDownloadEnabled) {
             downloadColors();
         }
+        if (autoDownloadScreenshotEnabled) {
+            downloadScreenshot();
+        }
     }
     function invertColor(hex) {
         // 计算颜色的反色
@@ -172,7 +177,21 @@
             autoDownloadEnabled = !autoDownloadEnabled;
         }
     });
-
+    // 监听按下 "S" 键事件，切换自动下载截图功能状态
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'S' || event.key === 's') {
+            autoDownloadScreenshotEnabled = !autoDownloadScreenshotEnabled;
+        }
+    });
+    function downloadScreenshot() {
+        html2canvas(document.querySelector('.color')).then(function(canvas) {
+            var link = document.createElement('a');
+            var colorsName = document.querySelector('.ctop').innerHTML + "-" + document.querySelector('.cbottom').innerHTML;
+            link.download = colorsName + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
     // 每隔3秒更新颜色
     setInterval(setColors, 1000);
     // 初始化设置一次颜色
