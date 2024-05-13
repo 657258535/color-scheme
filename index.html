@@ -10,7 +10,6 @@
         ::-webkit-scrollbar {
             width: 0px;
         }
-
         /*全局样式*/
         *,
         input::-webkit-input-placeholder {
@@ -25,18 +24,15 @@
             list-style: none;
             user-select: none;
         }
-
         /*背景色*/
         body {
             /*background-color:#00C5CD;*/
         }
-
         .color {
             width: 100%;
             height: 100vh;
             background-color: #000;
         }
-
         .cleft,
         .cright {
             width: 50%;
@@ -44,15 +40,12 @@
             float: left;
             z-index: -1;
         }
-
         .cleft {
             background-color: #333;
         }
-
         .cright {
             background-color: #555;
         }
-
         .ctop,
         .cbottom {
             width: 200px;
@@ -68,36 +61,26 @@
             font-size: 25px;
             font-weight: 800;
         }
-
         .ctop {
             top: 15vh;
         }
-
         .cbottom {
             top: 65vh;
         }
     </style>
 </head>
-
 <body>
 <div class="color">
     <div class="cleft">
-
     </div>
     <div class="cright">
-
     </div>
-
     <div class="ctop">#000000</div>
     <div class="cbottom">#666666</div>
-
 </div>
-<script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/clipboard.js/2.0.10/clipboard.min.js" type="application/javascript"></script>
 <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/sweetalert/2.1.2/sweetalert.min.js" type="application/javascript"></script>
-
 <script type="text/javascript">
     var autoDownloadEnabled = false;
-
     function copyToClipboard(text) {
         var tempInput = document.createElement("input");
         tempInput.style = "position: absolute; left: -1000px; top: -1000px";
@@ -107,7 +90,6 @@
         document.execCommand("copy");
         document.body.removeChild(tempInput);
     }
-
     function showCopiedMessage() {
         swal({
             title: "已复制",
@@ -118,22 +100,18 @@
             timer: 500
         });
     }
-
     document.querySelector('.ctop').addEventListener('click', function () {
         copyToClipboard(this.innerHTML + " " + document.querySelector('.cbottom').innerHTML);
         showCopiedMessage();
     });
-
     document.querySelector('.cbottom').addEventListener('click', function () {
         copyToClipboard(document.querySelector('.ctop').innerHTML + " " + this.innerHTML);
         showCopiedMessage();
     });
-
     function getRandomColor() {
         // 生成随机颜色的函数
         return '#' + Math.floor(Math.random() * 16777215).toString(16);
     }
-
     function setColors() {
         // 生成两种不同的随机颜色
         var color1 = getRandomColor();
@@ -142,21 +120,17 @@
         // 设置 cleft、ctop、cright、cbottom 的背景颜色
         document.querySelector('.cleft').style.backgroundColor = color1;
         document.querySelector('.cright').style.backgroundColor = color2;
-
         document.querySelector('.ctop').style.backgroundColor = color1;
         document.querySelector('.cbottom').style.backgroundColor = color2;
         document.querySelector('.ctop').innerHTML = color1;
         document.querySelector('.cbottom').innerHTML = color2;
-
         // 设置 ctop 和 cbottom 的文字颜色
         document.querySelector('.ctop').style.color = color2;
         document.querySelector('.cbottom').style.color = color1;
-
         if (autoDownloadEnabled) {
             downloadColors();
         }
     }
-
     function invertColor(hex) {
         // 计算颜色的反色
         if (hex.indexOf('#') === 0) {
@@ -175,7 +149,6 @@
         // Convert invert RGB to hex
         return '#' + ('000000' + (r << 16 | g << 8 | b).toString(16)).slice(-6);
     }
-
     function downloadColors() {
         var colorsText = document.querySelector('.ctop').innerHTML + " " + document.querySelector('.cbottom').innerHTML;
         var blob = new Blob([colorsText], {
@@ -190,8 +163,7 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
-
-    // Listen for 'D' key press event
+    // 监听按下 "D "键事件
     document.addEventListener('keydown', function (event) {
         if (event.key === 'D' || event.key === 'd') {
             autoDownloadEnabled = !autoDownloadEnabled;
@@ -200,10 +172,8 @@
 
     // 每隔3秒更新颜色
     setInterval(setColors, 1000);
-
     // 初始化设置一次颜色
     setColors();
 </script>
-
 </body>
 </html>
