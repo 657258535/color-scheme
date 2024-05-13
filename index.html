@@ -57,7 +57,7 @@
             border-radius: 50%;
             text-align: center;
             line-height: 200px;
-            box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.02);
             font-size: 25px;
             font-weight: 800;
         }
@@ -151,13 +151,15 @@
     }
     function downloadColors() {
         var colorsText = document.querySelector('.ctop').innerHTML + " " + document.querySelector('.cbottom').innerHTML;
+        var colorsName = document.querySelector('.ctop').innerHTML + "-" + document.querySelector('.cbottom').innerHTML;
+        colorsName = colorsName.split("#").join("") + ".txt";
         var blob = new Blob([colorsText], {
             type: "text/plain;charset=utf-8"
         });
         var url = URL.createObjectURL(blob);
         var a = document.createElement("a");
         a.href = url;
-        a.download = "colors.txt";
+        a.download = colorsName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
